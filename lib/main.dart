@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/widgets/group_form/group_form_widget.dart';
 import 'package:todo_app/widgets/groups/groups_widget.dart';
 
 void main() {
@@ -17,7 +18,8 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: GroupsWidget.id,
       routes: {
-        GroupsWidget.id: (context) => GroupsWidget()
+        GroupsWidget.id: (context) => const GroupsWidget(),
+        GroupFormWidget.id: (context) => const GroupFormWidget(),
       },
     );
   }
