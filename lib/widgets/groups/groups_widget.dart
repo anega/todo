@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:todo_app/widgets/group_form/group_form_widget.dart';
 
 class GroupsWidget extends StatelessWidget {
   static const id = 'groups_screen';
@@ -13,7 +14,9 @@ class GroupsWidget extends StatelessWidget {
       body: const _GroupList(),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).pushNamed(GroupFormWidget.id);
+        },
       ),
     );
   }
