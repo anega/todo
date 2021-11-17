@@ -1,17 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:todo_app/widgets/group_form/group_form_widget.dart';
+import 'package:todo_app/widgets/groups/groups_widget_model.dart';
 
-class GroupsWidget extends StatelessWidget {
+class GroupsWidget extends StatefulWidget {
   static const id = 'groups_screen';
 
   const GroupsWidget({Key? key}) : super(key: key);
 
   @override
+  State<GroupsWidget> createState() => _GroupsWidgetState();
+}
+
+class _GroupsWidgetState extends State<GroupsWidget> {
+  final _model = GroupsWidgetModel();
+
+  @override
+  Widget build(BuildContext context) {
+    return GroupsWidgetModelProvider(
+      model: _model,
+      child: const _GroupsWidgetBody(),
+    );
+  }
+}
+
+class _GroupsWidgetBody extends StatelessWidget {
+  const _GroupsWidgetBody({
+    Key? key,
+  }) : super(key: key);
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Groups')),
-      body: const _GroupList(),
+      body: _GroupList(),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () {
@@ -22,18 +44,11 @@ class GroupsWidget extends StatelessWidget {
   }
 }
 
-class _GroupList extends StatefulWidget {
-  const _GroupList({Key? key}) : super(key: key);
-
-  @override
-  _GroupListState createState() => _GroupListState();
-}
-
-class _GroupListState extends State<_GroupList> {
+class _GroupList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-      itemCount: 20,
+      itemCount: GroupsWidgetModelProvider.watch(context)?.model.groups.length ?? 0,
       itemBuilder: (BuildContext context, int index) {
         return _GroupListRowWidget(
           indexInList: index,
@@ -56,13 +71,14 @@ class _GroupListRowWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final group = GroupsWidgetModelProvider.read(context)!.model.groups[indexInList];
     return Slidable(
       endActionPane: ActionPane(
         extentRatio: 0.25,
         motion: const BehindMotion(),
         children: [
           SlidableAction(
-            onPressed: (BuildContext context) {},
+            onPressed: (context) => GroupsWidgetModelProvider.read(context)!.model.deleteGroup(indexInList),
             backgroundColor: const Color(0xFFFE4A49),
             foregroundColor: Colors.white,
             icon: Icons.delete,
@@ -70,9 +86,9 @@ class _GroupListRowWidget extends StatelessWidget {
           ),
         ],
       ),
-      child: const ListTile(
-        title: Text('One-line with trailing widget'),
-        trailing: Icon(Icons.chevron_right),
+      child: ListTile(
+        title: Text(group.name),
+        trailing: const Icon(Icons.chevron_right),
       ),
     );
   }
