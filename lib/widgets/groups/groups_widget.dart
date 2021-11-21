@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:todo_app/widgets/group_form/group_form_widget.dart';
 import 'package:todo_app/widgets/groups/groups_widget_model.dart';
+import 'package:todo_app/widgets/tasks/tasks_widget.dart';
 
 class GroupsWidget extends StatefulWidget {
   static const id = 'groups_screen';
@@ -48,7 +49,11 @@ class _GroupList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-      itemCount: GroupsWidgetModelProvider.watch(context)?.model.groups.length ?? 0,
+      itemCount: GroupsWidgetModelProvider
+          .watch(context)
+          ?.model
+          .groups
+          .length ?? 0,
       itemBuilder: (BuildContext context, int index) {
         return _GroupListRowWidget(
           indexInList: index,
@@ -71,14 +76,19 @@ class _GroupListRowWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final group = GroupsWidgetModelProvider.read(context)!.model.groups[indexInList];
+    final group = GroupsWidgetModelProvider
+        .read(context)!
+        .model
+        .groups[indexInList];
     return Slidable(
       endActionPane: ActionPane(
         extentRatio: 0.25,
         motion: const BehindMotion(),
         children: [
           SlidableAction(
-            onPressed: (context) => GroupsWidgetModelProvider.read(context)!.model.deleteGroup(indexInList),
+            onPressed: (context) =>
+                GroupsWidgetModelProvider.read(context)!.model.deleteGroup(
+                    indexInList),
             backgroundColor: const Color(0xFFFE4A49),
             foregroundColor: Colors.white,
             icon: Icons.delete,
@@ -87,8 +97,13 @@ class _GroupListRowWidget extends StatelessWidget {
         ],
       ),
       child: ListTile(
-        title: Text(group.name),
-        trailing: const Icon(Icons.chevron_right),
+          title: Text(group.name),
+          trailing: const Icon(Icons.chevron_right),
+          onTap: () =>
+              GroupsWidgetModelProvider
+                  .read(context)
+                  ?.model
+                  .showTasks(context, indexInList),
       ),
     );
   }
