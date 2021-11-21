@@ -1,11 +1,32 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:todo_app/domain/entity/group.dart';
+import 'package:todo_app/widgets/task_form/task_form_widget.dart';
 
 class TasksWidgetModel extends ChangeNotifier {
   final int groupKey;
+  late final Future<Box<Group>> _groupBox;
+  Group? _group;
 
-  TasksWidgetModel({
-    required this.groupKey,
-  });
+  Group? get group => _group;
+
+  TasksWidgetModel({required this.groupKey}) {
+    _setup();
+  }
+
+  void _setup() {
+    if (!Hive.isAdapterRegistered(1)) {
+      Hive.registerAdapter(GroupAdapter());
+    }
+    _groupBox = Hive.openBox<Group>('groups_box');
+    _loadGroup();
+  }
+
+  void _loadGroup() async {
+    final box = await _groupBox;
+    _group = box.get(groupKey);
+    notifyListeners();
+  }
 }
 
 class TasksWidgetModelProvider extends InheritedNotifier {

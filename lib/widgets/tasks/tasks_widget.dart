@@ -11,22 +11,60 @@ class TasksWidget extends StatefulWidget {
 }
 
 class _TasksWidgetState extends State<TasksWidget> {
-  late TasksWidgetModel _model;
+  TasksWidgetModel? _model;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (_model == null) {
-      final groupKey = ModalRoute
-          .of(context)!
-          .settings
-          .arguments as int;
+      final groupKey = ModalRoute.of(context)!.settings.arguments as int;
       _model = TasksWidgetModel(groupKey: groupKey);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return TasksWidgetModelProvider(
+      model: _model!,
+      child: const _TaskWidgetBody(),
+    );
+  }
+}
+
+class _TaskWidgetBody extends StatelessWidget {
+  const _TaskWidgetBody({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final model = TasksWidgetModelProvider.watch(context)?.model;
+    final title = model?.group?.name ?? 'Tasks';
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(title),
+      ),
+      body: const _TasksList(),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add),
+        onPressed: () {},
+      ),
+    );
+  }
+}
+
+class _TasksList extends StatelessWidget {
+  const _TasksList({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.separated(
+      itemCount: 10,
+      itemBuilder: (BuildContext context, int index) {
+        return const Text('test');
+      },
+      separatorBuilder: (BuildContext context, int index) {
+        return const Divider(height: 1);
+      },
+    );
   }
 }
