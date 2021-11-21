@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:todo_app/widgets/tasks/tasks_widget_model.dart';
 
 class TasksWidget extends StatefulWidget {
@@ -43,7 +44,7 @@ class _TaskWidgetBody extends StatelessWidget {
       appBar: AppBar(
         title: Text(title),
       ),
-      body: const _TasksList(),
+      body: _TasksList(),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () => model?.showForm(context),
@@ -53,18 +54,61 @@ class _TaskWidgetBody extends StatelessWidget {
 }
 
 class _TasksList extends StatelessWidget {
-  const _TasksList({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-      itemCount: 10,
+      itemCount: TasksWidgetModelProvider
+          .watch(context)
+          ?.model
+          .tasks
+          .length ?? 0,
       itemBuilder: (BuildContext context, int index) {
-        return const Text('test');
+        return _TaskListRowWidget(
+          indexInList: index,
+        );
       },
       separatorBuilder: (BuildContext context, int index) {
         return const Divider(height: 1);
       },
+    );
+  }
+}
+
+class _TaskListRowWidget extends StatelessWidget {
+  final int indexInList;
+
+  const _TaskListRowWidget({
+    Key? key,
+    required this.indexInList,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final task = TasksWidgetModelProvider
+        .read(context)!
+        .model
+        .tasks[indexInList];
+    return Slidable(
+      endActionPane: ActionPane(
+        extentRatio: 0.25,
+        motion: const BehindMotion(),
+        children: [
+          SlidableAction(
+            onPressed: (context) =>
+                TasksWidgetModelProvider.read(context)!.model.deleteTask(
+                    indexInList),
+            backgroundColor: const Color(0xFFFE4A49),
+            foregroundColor: Colors.white,
+            icon: Icons.delete,
+            label: 'Delete',
+          ),
+        ],
+      ),
+      child: ListTile(
+        title: Text(task.text),
+        // trailing: const Icon(Icons.chevron_right),
+        onTap: () {},
+      ),
     );
   }
 }

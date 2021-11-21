@@ -11,6 +11,6 @@ class Task extends HiveObject {
 
   Task({
     required this.text,
-    this.done = false,
+    required this.done,
   });
 }

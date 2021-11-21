@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:todo_app/widgets/group_form/group_form_widget.dart';
 import 'package:todo_app/widgets/groups/groups_widget_model.dart';
-import 'package:todo_app/widgets/tasks/tasks_widget.dart';
 
 class GroupsWidget extends StatefulWidget {
   static const id = 'groups_screen';

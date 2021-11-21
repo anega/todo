@@ -11,18 +11,18 @@ class TaskFormWidgetModel {
 
   void saveTask(BuildContext context) async {
     if (taskText.isEmpty) return;
-    if(!Hive.isAdapterRegistered(1)) {
+    if (!Hive.isAdapterRegistered(1)) {
       Hive.registerAdapter(GroupAdapter());
     }
-    if(!Hive.isAdapterRegistered(2)) {
+    if (!Hive.isAdapterRegistered(2)) {
       Hive.registerAdapter(TaskAdapter());
     }
 
     final tasksBox = await Hive.openBox<Task>('tasks_box');
-    final task = Task(text: 'text');
+    final task = Task(text: taskText, done: false);
     await tasksBox.add(task);
 
-    final groupBox = await Hive.openBox<Group>('task_box');
+    final groupBox = await Hive.openBox<Group>('groups_box');
     final group = groupBox.get(groupKey);
     group?.addTask(tasksBox, task);
 
@@ -53,7 +53,6 @@ class TaskFormWidgetModelProvider extends InheritedWidget {
         ?.widget;
     return widget is TaskFormWidgetModelProvider ? widget : null;
   }
-
 
   @override
   bool updateShouldNotify(covariant TaskFormWidgetModelProvider oldWidget) {
