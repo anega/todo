@@ -42,6 +42,6 @@ class GroupFormWidgetModelProvider extends InheritedWidget {
 
   @override
   bool updateShouldNotify(covariant GroupFormWidgetModelProvider oldWidget) {
-    return true;
+    return false;
   }
 }

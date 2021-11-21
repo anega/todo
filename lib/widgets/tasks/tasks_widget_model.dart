@@ -29,7 +29,7 @@ class TasksWidgetModel extends ChangeNotifier {
   }
 
   void showForm(BuildContext context) {
-    Navigator.of(context).pushNamed(TaskFormWidget.id);
+    Navigator.of(context).pushNamed(TaskFormWidget.id, arguments: groupKey);
   }
 }
 

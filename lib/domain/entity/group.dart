@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:todo_app/domain/entity/task.dart';
 
 part 'group.g.dart';
 
@@ -11,4 +12,8 @@ class Group {
   HiveList? tasks;
 
   Group({required this.name});
+
+  void addTask(Box<Task> box, Task task) {
+    tasks ??= HiveList(box, objects: [task]);
+  }
 }
