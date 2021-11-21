@@ -3,6 +3,7 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todo_app/widgets/group_form/group_form_widget.dart';
 import 'package:todo_app/widgets/groups/groups_widget.dart';
+import 'package:todo_app/widgets/task_form/task_form_widget.dart';
 import 'package:todo_app/widgets/tasks/tasks_widget.dart';
 
 void main() async {
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
         GroupsWidget.id: (context) => const GroupsWidget(),
         GroupFormWidget.id: (context) => const GroupFormWidget(),
         TasksWidget.id: (context) => const TasksWidget(),
+        TaskFormWidget.id: (context) => const TaskFormWidget(),
       },
     );
   }
