@@ -27,6 +27,10 @@ class TasksWidgetModel extends ChangeNotifier {
     _group = box.get(groupKey);
     notifyListeners();
   }
+
+  void showForm(BuildContext context) {
+    Navigator.of(context).pushNamed(TaskFormWidget.id);
+  }
 }
 
 class TasksWidgetModelProvider extends InheritedNotifier {

@@ -46,7 +46,7 @@ class _TaskWidgetBody extends StatelessWidget {
       body: const _TasksList(),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        onPressed: () {},
+        onPressed: () => model?.showForm(context),
       ),
     );
   }
