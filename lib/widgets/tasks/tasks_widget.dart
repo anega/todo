@@ -57,11 +57,8 @@ class _TasksList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-      itemCount: TasksWidgetModelProvider
-          .watch(context)
-          ?.model
-          .tasks
-          .length ?? 0,
+      itemCount:
+          TasksWidgetModelProvider.watch(context)?.model.tasks.length ?? 0,
       itemBuilder: (BuildContext context, int index) {
         return _TaskListRowWidget(
           indexInList: index,
@@ -84,19 +81,21 @@ class _TaskListRowWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final task = TasksWidgetModelProvider
-        .read(context)!
-        .model
-        .tasks[indexInList];
+    final task =
+        TasksWidgetModelProvider.read(context)!.model.tasks[indexInList];
+    final icon = task.done ? Icons.done : Icons.circle;
+    final textStyle = task.done
+        ? const TextStyle(decoration: TextDecoration.lineThrough)
+        : null;
     return Slidable(
       endActionPane: ActionPane(
         extentRatio: 0.25,
         motion: const BehindMotion(),
         children: [
           SlidableAction(
-            onPressed: (context) =>
-                TasksWidgetModelProvider.read(context)!.model.deleteTask(
-                    indexInList),
+            onPressed: (context) => TasksWidgetModelProvider.read(context)!
+                .model
+                .deleteTask(indexInList),
             backgroundColor: const Color(0xFFFE4A49),
             foregroundColor: Colors.white,
             icon: Icons.delete,
@@ -105,9 +104,14 @@ class _TaskListRowWidget extends StatelessWidget {
         ],
       ),
       child: ListTile(
-        title: Text(task.text),
-        // trailing: const Icon(Icons.chevron_right),
-        onTap: () {},
+        title: Text(
+          task.text,
+          style: textStyle,
+        ),
+        trailing: Icon(icon),
+        onTap: () => TasksWidgetModelProvider.watch(context)
+            ?.model
+            .toggleDone(indexInList),
       ),
     );
   }

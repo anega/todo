@@ -55,6 +55,14 @@ class TasksWidgetModel extends ChangeNotifier {
     await _group?.tasks?.deleteFromHive(groupIndex);
     await _group?.save();
   }
+
+  void toggleDone(int index) {
+    final task = _group?.tasks?[index];
+    final currentState = task?.done ?? false;
+    task?.done = !currentState;
+    task?.save();
+    notifyListeners();
+  }
 }
 
 class TasksWidgetModelProvider extends InheritedNotifier {
